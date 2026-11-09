@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Job Application Tracker</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">JT</span>
+      <h1>Job Application Tracker</h1>
+    </div>
+    <button id="new-app-btn" class="btn btn-primary">+ New Application</button>
+  </header>
+
+  <main class="board">
+    <section class="column" data-status="in-progress">
+      <div class="column-header">
+        <span class="dot dot-progress"></span>
+        <h2>In Progress</h2>
+        <span class="count">0</span>
+      </div>
+      <div class="card-list"></div>
+    </section>
+
+    <section class="column" data-status="in-review">
+      <div class="column-header">
+        <span class="dot dot-review"></span>
+        <h2>In Review</h2>
+        <span class="count">0</span>
+      </div>
+      <div class="card-list"></div>
+    </section>
+
+    <section class="column" data-status="interview">
+      <div class="column-header">
+        <span class="dot dot-interview"></span>
+        <h2>Interview</h2>
+        <span class="count">0</span>
+      </div>
+      <div class="card-list"></div>
+    </section>
+
+    <section class="column" data-status="closed">
+      <div class="column-header">
+        <span class="dot dot-closed"></span>
+        <h2>Closed</h2>
+        <span class="count">0</span>
+      </div>
+      <div class="card-list"></div>
+    </section>
+  </main>
+
+  <!-- New application modal -->
+  <dialog id="app-dialog">
+    <form id="app-form" method="dialog">
+      <h3>New Application</h3>
+
+      <label>Company
+        <input name="company" required placeholder="e.g. Acme Corp">
+      </label>
+      <label>Position
+        <input name="position" required placeholder="e.g. Frontend Developer">
+      </label>
+      <div class="row">
+        <label>Date applied
+          <input name="date" type="date">
+        </label>
+        <label>Status
+          <select name="status">
+            <option value="in-progress">In Progress</option>
+            <option value="in-review">In Review</option>
+            <option value="interview">Interview</option>
+            <option value="closed">Closed</option>
+          </select>
+        </label>
+      </div>
+      <label>Notes
+        <textarea name="notes" rows="3" placeholder="Optional"></textarea>
+      </label>
+
+      <div class="actions">
+        <button type="button" id="cancel-btn" class="btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="app.js"></script>
+</body>
+</html>

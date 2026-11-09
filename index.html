@@ -58,15 +58,51 @@
     <form id="app-form" method="dialog">
       <h3>New Application</h3>
 
+      <label>Job position
+        <input name="position" required placeholder="e.g. Frontend Developer">
+      </label>
       <label>Company
         <input name="company" required placeholder="e.g. Acme Corp">
       </label>
-      <label>Position
-        <input name="position" required placeholder="e.g. Frontend Developer">
-      </label>
       <div class="row">
-        <label>Date applied
-          <input name="date" type="date">
+        <label>Job type
+          <select name="jobType" required>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Internship">Internship</option>
+          </select>
+        </label>
+        <label>Job mode
+          <select name="jobMode" required>
+            <option value="Hybrid">Hybrid</option>
+            <option value="Remote">Remote</option>
+            <option value="On-site">On-site</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label>Application date
+          <input name="date" type="date" required>
+        </label>
+        <label>Referral
+          <select name="referral">
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label>Applied via
+          <select name="source" required>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Indeed">Indeed</option>
+            <option value="Handshake">Handshake</option>
+            <option value="Glassdoor">Glassdoor</option>
+            <option value="Company website">Company website</option>
+            <option value="Email">Email</option>
+            <option value="Career fair">Career fair</option>
+            <option value="Other">Other</option>
+          </select>
         </label>
         <label>Status
           <select name="status">
@@ -77,10 +113,6 @@
           </select>
         </label>
       </div>
-      <label>Notes
-        <textarea name="notes" rows="3" placeholder="Optional"></textarea>
-      </label>
-
       <div class="actions">
         <button type="button" id="cancel-btn" class="btn">Cancel</button>
         <button type="submit" class="btn btn-primary">Save</button>

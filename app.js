@@ -1,13 +1,13 @@
 // Job Application Tracker - prototype
 // Data lives in memory + localStorage (no backend yet).
 
-const STORAGE_KEY = "job-tracker-apps";
+const STORAGE_KEY = "job-tracker-apps-v2";
 
 const sampleApps = [
-  { id: 1, company: "Google", position: "Software Engineer Intern", date: "2026-10-28", status: "in-progress", notes: "Finish cover letter" },
-  { id: 2, company: "Spotify", position: "Frontend Developer", date: "2026-10-20", status: "in-review", notes: "" },
-  { id: 3, company: "Microsoft", position: "Web Developer", date: "2026-10-15", status: "interview", notes: "Technical interview Nov 12" },
-  { id: 4, company: "Amazon", position: "UX Designer", date: "2026-09-30", status: "closed", notes: "Rejected" },
+  { id: 1, position: "Software Engineer Intern", company: "Google", jobType: "Internship", jobMode: "Hybrid", date: "2026-10-28", referral: "yes", source: "LinkedIn", status: "in-progress" },
+  { id: 2, position: "Frontend Developer", company: "Spotify", jobType: "Full-time", jobMode: "Remote", date: "2026-10-20", referral: "no", source: "Company website", status: "in-review" },
+  { id: 3, position: "Web Developer", company: "Microsoft", jobType: "Full-time", jobMode: "On-site", date: "2026-10-15", referral: "no", source: "Handshake", status: "interview" },
+  { id: 4, position: "UX Designer", company: "Amazon", jobType: "Part-time", jobMode: "Remote", date: "2026-09-30", referral: "no", source: "Indeed", status: "closed" },
 ];
 
 let apps = load();
@@ -54,12 +54,22 @@ function createCard(app) {
   company.textContent = app.company;
   card.append(title, company);
 
-  if (app.notes) {
-    const notes = document.createElement("p");
-    notes.className = "notes";
-    notes.textContent = app.notes;
-    card.appendChild(notes);
+  const tags = document.createElement("div");
+  tags.className = "tags";
+  [app.jobType, app.jobMode, app.source].forEach((text) => {
+    if (!text) return;
+    const tag = document.createElement("span");
+    tag.className = "tag";
+    tag.textContent = text;
+    tags.appendChild(tag);
+  });
+  if (app.referral === "yes") {
+    const tag = document.createElement("span");
+    tag.className = "tag tag-referral";
+    tag.textContent = "Referral";
+    tags.appendChild(tag);
   }
+  card.appendChild(tags);
 
   const meta = document.createElement("div");
   meta.className = "meta";
@@ -122,11 +132,14 @@ form.addEventListener("submit", () => {
   const data = new FormData(form);
   apps.push({
     id: Date.now(),
-    company: data.get("company").trim(),
     position: data.get("position").trim(),
+    company: data.get("company").trim(),
+    jobType: data.get("jobType"),
+    jobMode: data.get("jobMode"),
     date: data.get("date"),
+    referral: data.get("referral"),
+    source: data.get("source"),
     status: data.get("status"),
-    notes: data.get("notes").trim(),
   });
   save();
   render();

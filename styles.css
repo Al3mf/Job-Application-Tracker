@@ -104,7 +104,13 @@ body {
 .card.dragging { opacity: 0.5; }
 .card h3 { font-size: 0.95rem; margin: 0 0 2px; }
 .card .company { color: var(--muted); font-size: 0.85rem; margin: 0; }
-.card .notes { font-size: 0.8rem; margin: 8px 0 0; }
+.card .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.tag {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 999px; padding: 2px 8px;
+  font-size: 0.72rem; color: var(--muted); font-weight: 600;
+}
+.tag-referral { background: #ecfdf5; border-color: #a7f3d0; color: #047857; }
 .card .meta {
   display: flex; justify-content: space-between; align-items: center;
   margin-top: 10px; font-size: 0.75rem; color: var(--muted);

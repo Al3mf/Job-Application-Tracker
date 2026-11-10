@@ -71,7 +71,7 @@ function render() {
 
 function createCard(app) {
   const card = document.createElement("article");
-  card.className = "card";
+  card.className = `card status-${app.status}`;
   card.tabIndex = 0;
   card.setAttribute("role", "button");
   card.setAttribute("aria-label", `${app.position} at ${app.company}`);

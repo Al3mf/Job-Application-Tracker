@@ -115,6 +115,7 @@ Job-Application-Tracker/
 
 - **HTML5**: page structure and the native `<dialog>` element for the form.
 - **CSS3**: Grid and Flexbox layout, CSS variables, media queries.
+- **IBM Plex Sans** font (Google Fonts).
 - **JavaScript (vanilla)**: DOM manipulation, form validation, `localStorage`.
 - **Inline SVG** icons for the application platforms.
 

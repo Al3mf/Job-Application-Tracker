@@ -4,6 +4,8 @@ A web dashboard to organize and follow up on job applications, from the moment y
 
 > Web Programming and Design project.
 
+🔗 **Live demo:** <https://al3mf.github.io/Job-Application-Tracker/>
+
 ![Status](https://img.shields.io/badge/status-prototype-orange)
 ![HTML](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=white)
 ![CSS](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=white)
@@ -15,6 +17,7 @@ A web dashboard to organize and follow up on job applications, from the moment y
 
 - [About](#about)
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Dashboard](#dashboard)
 - [Application fields](#application-fields)
 - [Getting started](#getting-started)
@@ -32,13 +35,22 @@ Looking for a job or internship means sending many applications through differen
 ## Features
 
 - **Kanban board** with four stages: In Progress, In Review, Interview and Closed.
-- **+ New Application** button that opens a form to register a new application.
-- **Drag and drop** cards between columns to update their stage.
+- **Starts empty**: the board has no sample data, you add your own applications.
+- **+ New Application** button that opens a form to register a new application. Every dropdown starts on **"-"**, so you must pick a value before saving.
+- **Application details**: click a card to open a menu with all its data.
+- **Status changes only from the details menu**, so cards can't be moved by accident.
+- **Delete** an application from its details menu (asks for confirmation).
+- **Platform icons** for "Applied via" (LinkedIn, Indeed, Handshake, Glassdoor, company website, email, career fair).
 - **Counters** on each column showing how many applications it holds.
 - **Tags** on each card for job type, job mode, platform and referral.
-- **Delete** applications with the **×** button on each card.
 - **Saved in the browser** with `localStorage`, so data stays after reloading the page.
 - **Responsive** layout: columns stack vertically on phones.
+
+## Screenshots
+
+| Dashboard | Application details |
+| --- | --- |
+| ![Dashboard](docs/dashboard.png) | ![Application details](docs/details.png) |
 
 ## Dashboard
 
@@ -49,9 +61,11 @@ Looking for a job or internship means sending many applications through differen
 | 🟢 **Interview** | You have been invited to one or more interviews. |
 | ⚫ **Closed** | The process ended (offer, rejection or withdrawn). |
 
+To move an application to another stage, click its card, choose the new **Status** and press **Save**.
+
 ## Application fields
 
-When you click **+ New Application**, the form asks for:
+When you click **+ New Application**, the form asks for the following. All fields are required, and every dropdown starts empty (**-**).
 
 | Field | Type | Options |
 | --- | --- | --- |
@@ -84,15 +98,16 @@ python3 -m http.server 8000
 
 Then open <http://localhost:8000>.
 
-> To reset the sample data, clear the site's `localStorage` from your browser's developer tools.
+> To delete all your data at once, clear the site's `localStorage` from your browser's developer tools.
 
 ## Project structure
 
 ```
 Job-Application-Tracker/
-├── index.html   # Page layout: top bar, board columns and New Application form
-├── styles.css   # Styles for the dashboard, cards, tags and modal
-├── app.js       # Logic: rendering, drag and drop, form handling, localStorage
+├── index.html   # Page layout: top bar, board columns, New Application and details menus
+├── styles.css   # Styles for the dashboard, cards, tags, icons and menus
+├── app.js       # Logic: rendering, forms, details menu, icons, localStorage
+├── docs/        # Screenshots used in this README
 └── README.md
 ```
 
@@ -100,14 +115,18 @@ Job-Application-Tracker/
 
 - **HTML5**: page structure and the native `<dialog>` element for the form.
 - **CSS3**: Grid and Flexbox layout, CSS variables, media queries.
-- **JavaScript (vanilla)**: DOM manipulation, HTML Drag and Drop API, `localStorage`.
+- **IBM Plex Sans** font (Google Fonts).
+- **JavaScript (vanilla)**: DOM manipulation, form validation, `localStorage`.
+- **Inline SVG** icons for the application platforms.
 
 ## Roadmap
 
 - [x] Dashboard with four columns
 - [x] New Application form
-- [x] Drag and drop between columns
-- [ ] Edit an existing application
+- [x] Application details menu with status update
+- [x] Platform icons for "Applied via"
+- [x] Published with GitHub Pages
+- [ ] Edit the other fields of an application
 - [ ] Search and filters (by company, job type, platform…)
 - [ ] Notes and job posting link per application
 - [ ] Statistics (applications per week, response rate)

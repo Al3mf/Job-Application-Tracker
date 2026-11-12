@@ -26,7 +26,7 @@
   </header>
 
   <main class="board">
-    <section class="column" data-status="in-progress">
+    <section class="column" data-status="in-progress" style="--i: 0">
       <div class="column-header">
         <span class="dot dot-progress"></span>
         <h2>In Progress</h2>
@@ -35,7 +35,7 @@
       <div class="card-list"></div>
     </section>
 
-    <section class="column" data-status="in-review">
+    <section class="column" data-status="in-review" style="--i: 1">
       <div class="column-header">
         <span class="dot dot-review"></span>
         <h2>In Review</h2>
@@ -44,7 +44,7 @@
       <div class="card-list"></div>
     </section>
 
-    <section class="column" data-status="interview">
+    <section class="column" data-status="interview" style="--i: 2">
       <div class="column-header">
         <span class="dot dot-interview"></span>
         <h2>Interview</h2>
@@ -53,10 +53,10 @@
       <div class="card-list"></div>
     </section>
 
-    <section class="column" data-status="closed">
+    <section class="column" data-status="hired" style="--i: 3">
       <div class="column-header">
-        <span class="dot dot-closed"></span>
-        <h2>Closed</h2>
+        <span class="dot dot-hired"></span>
+        <h2>Hired</h2>
         <span class="count">0</span>
       </div>
       <div class="card-list"></div>
@@ -130,7 +130,7 @@
             <option value="in-progress">In Progress</option>
             <option value="in-review">In Review</option>
             <option value="interview">Interview</option>
-            <option value="closed">Closed</option>
+            <option value="hired">Hired</option>
           </select>
         </label>
       </div>
@@ -161,7 +161,7 @@
           <option value="in-progress">In Progress</option>
           <option value="in-review">In Review</option>
           <option value="interview">Interview</option>
-          <option value="closed">Closed</option>
+          <option value="hired">Hired</option>
         </select>
       </label>
 

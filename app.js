@@ -13,7 +13,7 @@ const STATUS_LABELS = {
   "in-progress": "In Progress",
   "in-review": "In Review",
   "interview": "Interview",
-  "closed": "Closed",
+  "hired": "Hired",
 };
 
 // Icons for "Applied via". Job sites use a letter badge in the site's color;
@@ -46,17 +46,23 @@ function sourceIcon(source) {
 
 let apps = load();
 
+// "Closed" was renamed to "Hired".
+function migrate(list) {
+  list.forEach((a) => { if (a.status === "closed") a.status = "hired"; });
+  return list;
+}
+
 function load() {
   if (!currentUser) return []; // redirecting to the start screen
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (Array.isArray(saved)) return saved;
+    if (Array.isArray(saved)) return migrate(saved);
     // First login on this browser: keep the applications saved before accounts existed.
     const legacy = JSON.parse(localStorage.getItem(LEGACY_KEY));
     if (Array.isArray(legacy)) {
       localStorage.setItem(STORAGE_KEY, JSON.stringify(legacy));
       localStorage.removeItem(LEGACY_KEY);
-      return legacy;
+      return migrate(legacy);
     }
   } catch (e) { /* ignore */ }
   return []; // dashboard starts empty
@@ -76,6 +82,9 @@ function save() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(apps)); } catch (e) { /* ignore */ }
 }
 
+let firstRender = true; // cards only animate in when the page loads
+let movedId = null;      // card that just changed status, highlighted once
+
 function render() {
   document.querySelectorAll(".column").forEach((column) => {
     const status = column.dataset.status;
@@ -91,11 +100,15 @@ function render() {
     }
     items.forEach((app) => list.appendChild(createCard(app)));
   });
+  firstRender = false;
+  movedId = null;
 }
 
 function createCard(app) {
   const card = document.createElement("article");
   card.className = `card status-${app.status}`;
+  if (firstRender) card.classList.add("enter");
+  if (app.id === movedId) card.classList.add("just-moved");
   card.tabIndex = 0;
   card.setAttribute("role", "button");
   card.setAttribute("aria-label", `${app.position} at ${app.company}`);
@@ -230,6 +243,7 @@ function openDetails(id) {
 detailsForm.addEventListener("submit", () => {
   const app = apps.find((a) => a.id === currentId);
   if (app) {
+    if (app.status !== detailsForm.status.value) movedId = app.id;
     app.status = detailsForm.status.value;
     save();
     // ---------- User menu ----------

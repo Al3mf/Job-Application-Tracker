@@ -2,7 +2,7 @@
 
 # Job Application Tracker
 
-A web dashboard to organize and follow up on job applications, from the moment you apply until the process is closed.
+A web dashboard to organize and follow up on job applications, from the moment you apply until you get hired.
 
 > Web Programming and Design project.
 
@@ -38,7 +38,8 @@ Looking for a job or internship means sending many applications through differen
 ## Features
 
 - **Start screen** with **Log in** and **Sign up**. Each account sees only its own applications, and the dashboard is only available after logging in.
-- **Kanban board** with four stages: In Progress, In Review, Interview and Closed.
+- **Kanban board** with four stages: In Progress, In Review, Interview and Hired.
+- **Animations** that show the progression between stages: on the start screen a card moves from In Progress to Hired, and on the dashboard the columns appear one after another and a card is highlighted when its status changes.
 - **Starts empty**: the board has no sample data, you add your own applications.
 - **+ New Application** button that opens a form to register a new application. Every dropdown starts on **"-"**, so you must pick a value before saving.
 - **Job link** (optional) to save the URL of the job posting and open it later from the details menu.
@@ -71,8 +72,8 @@ The first screen (`index.html`) lets you **sign up** with your name, email and p
 | --- | --- |
 | 🟠 **In Progress** | You are preparing or just sent the application. |
 | 🟣 **In Review** | The company is reviewing your application. |
-| 🟢 **Interview** | You have been invited to one or more interviews. |
-| ⚫ **Closed** | The process ended (offer, rejection or withdrawn). |
+| 🔵 **Interview** | You have been invited to one or more interviews. |
+| 🟢 **Hired** | You got the job. |
 
 To move an application to another stage, click its card, choose the new **Status** and press **Save**.
 
@@ -90,7 +91,7 @@ When you click **+ New Application**, the form asks for the following. Every fie
 | Application date | Date | Defaults to today |
 | Referral | Dropdown | Yes, No |
 | Applied via | Dropdown | LinkedIn, Indeed, Handshake, Glassdoor, Company website, Email, Career fair, Other |
-| Status | Dropdown | In Progress, In Review, Interview, Closed |
+| Status | Dropdown | In Progress, In Review, Interview, Hired |
 
 ## Getting started
 
@@ -132,7 +133,7 @@ Job-Application-Tracker/
 ## Tech stack
 
 - **HTML5**: page structure and the native `<dialog>` element for the form.
-- **CSS3**: Grid and Flexbox layout, CSS variables, media queries.
+- **CSS3**: Grid and Flexbox layout, CSS variables, media queries, keyframe animations (disabled for users who prefer reduced motion).
 - **IBM Plex Sans** font (Google Fonts).
 - **JavaScript (vanilla)**: DOM manipulation, form validation, `localStorage`, Web Crypto API (password hashing).
 - **Inline SVG** icons for the application platforms.

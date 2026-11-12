@@ -23,18 +23,19 @@
       <p>Keep track of where you applied, which stage each process is in and what to follow up on next.</p>
 
       <ul class="hero-points">
-        <li><span class="point-mark"></span>Organize applications in four stages, from applied to closed</li>
+        <li><span class="point-mark"></span>Follow every application in four stages, from applied to hired</li>
         <li><span class="point-mark"></span>Save the job type, mode, platform, referral and job link</li>
         <li><span class="point-mark"></span>See your whole job search at a glance</li>
       </ul>
     </div>
 
     <!-- Small preview of the board -->
+    <!-- An application card moves from one stage to the next until it is hired -->
     <div class="hero-preview" aria-hidden="true">
-      <div class="preview-col"><span class="preview-head" style="--c: var(--progress)">In Progress</span><span class="preview-card"></span><span class="preview-card short"></span></div>
-      <div class="preview-col"><span class="preview-head" style="--c: var(--review)">In Review</span><span class="preview-card"></span></div>
-      <div class="preview-col"><span class="preview-head" style="--c: var(--interview)">Interview</span><span class="preview-card short"></span></div>
-      <div class="preview-col"><span class="preview-head" style="--c: var(--closed)">Closed</span><span class="preview-card"></span></div>
+      <div class="preview-col" style="--c: var(--progress); --i: 0"><span class="preview-head">In Progress</span><span class="preview-card traveler"></span><span class="preview-card short"></span></div>
+      <div class="preview-col" style="--c: var(--review); --i: 1"><span class="preview-head">In Review</span><span class="preview-card traveler"></span><span class="preview-card"></span></div>
+      <div class="preview-col" style="--c: var(--interview); --i: 2"><span class="preview-head">Interview</span><span class="preview-card traveler"></span><span class="preview-card short"></span></div>
+      <div class="preview-col" style="--c: var(--hired); --i: 3"><span class="preview-head">Hired</span><span class="preview-card traveler hired-card"><span class="check">✓</span></span></div>
     </div>
   </section>
 

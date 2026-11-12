@@ -1,7 +1,13 @@
 // Job Application Tracker - prototype
 // Data lives in memory + localStorage (no backend yet).
 
-const STORAGE_KEY = "job-tracker-apps-v3";
+// Only logged-in users can see the dashboard.
+const currentUser = getCurrentUser();
+if (!currentUser) window.location.replace("index.html");
+
+// Each user has their own list of applications.
+const LEGACY_KEY = "job-tracker-apps-v3"; // data saved before accounts existed
+const STORAGE_KEY = `job-tracker-apps:${currentUser?.email}`;
 
 const STATUS_LABELS = {
   "in-progress": "In Progress",
@@ -41,11 +47,29 @@ function sourceIcon(source) {
 let apps = load();
 
 function load() {
+  if (!currentUser) return []; // redirecting to the start screen
   try {
     const saved = JSON.parse(localStorage.getItem(STORAGE_KEY));
     if (Array.isArray(saved)) return saved;
+    // First login on this browser: keep the applications saved before accounts existed.
+    const legacy = JSON.parse(localStorage.getItem(LEGACY_KEY));
+    if (Array.isArray(legacy)) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(legacy));
+      localStorage.removeItem(LEGACY_KEY);
+      return legacy;
+    }
   } catch (e) { /* ignore */ }
   return []; // dashboard starts empty
+}
+
+// Only allow http(s) links so a saved link can never run code.
+function safeUrl(value) {
+  try {
+    const url = new URL(value);
+    return url.protocol === "http:" || url.protocol === "https:" ? url.href : null;
+  } catch (e) {
+    return null;
+  }
 }
 
 function save() {
@@ -149,9 +173,21 @@ newForm.addEventListener("submit", () => {
     referral: data.get("referral"),
     source: data.get("source"),
     status: data.get("status"),
+    link: safeUrl(data.get("link").trim()) || "",
   });
   save();
-  render();
+  // ---------- User menu ----------
+if (currentUser) {
+  document.getElementById("user-name").textContent = currentUser.name;
+  document.getElementById("user-avatar").textContent = currentUser.name
+    .split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+}
+document.getElementById("logout-btn").addEventListener("click", () => {
+  logOut();
+  window.location.replace("index.html");
+});
+
+render();
 });
 
 // ---------- Application details modal ----------
@@ -173,6 +209,19 @@ function openDetails(id) {
   document.getElementById("details-referral").textContent = app.referral === "yes" ? "Yes" : "No";
   const sourceEl = document.getElementById("details-source");
   sourceEl.replaceChildren(sourceIcon(app.source), app.source);
+  const linkEl = document.getElementById("details-link");
+  const href = app.link && safeUrl(app.link);
+  if (href) {
+    const a = document.createElement("a");
+    a.href = href;
+    a.target = "_blank";
+    a.rel = "noopener noreferrer";
+    a.className = "job-link";
+    a.textContent = "Open job posting ↗";
+    linkEl.replaceChildren(a);
+  } else {
+    linkEl.replaceChildren(Object.assign(document.createElement("span"), { className: "muted", textContent: "—" }));
+  }
 
   detailsForm.status.value = app.status;
   detailsDialog.showModal();
@@ -183,7 +232,18 @@ detailsForm.addEventListener("submit", () => {
   if (app) {
     app.status = detailsForm.status.value;
     save();
-    render();
+    // ---------- User menu ----------
+if (currentUser) {
+  document.getElementById("user-name").textContent = currentUser.name;
+  document.getElementById("user-avatar").textContent = currentUser.name
+    .split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+}
+document.getElementById("logout-btn").addEventListener("click", () => {
+  logOut();
+  window.location.replace("index.html");
+});
+
+render();
   }
 });
 
@@ -194,8 +254,30 @@ document.getElementById("delete-btn").addEventListener("click", () => {
   if (!app || !confirm(`Delete "${app.position}" at ${app.company}?`)) return;
   apps = apps.filter((a) => a.id !== currentId);
   save();
-  render();
+  // ---------- User menu ----------
+if (currentUser) {
+  document.getElementById("user-name").textContent = currentUser.name;
+  document.getElementById("user-avatar").textContent = currentUser.name
+    .split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+}
+document.getElementById("logout-btn").addEventListener("click", () => {
+  logOut();
+  window.location.replace("index.html");
+});
+
+render();
   detailsDialog.close();
+});
+
+// ---------- User menu ----------
+if (currentUser) {
+  document.getElementById("user-name").textContent = currentUser.name;
+  document.getElementById("user-avatar").textContent = currentUser.name
+    .split(/\s+/).map((w) => w[0]).join("").slice(0, 2).toUpperCase();
+}
+document.getElementById("logout-btn").addEventListener("click", () => {
+  logOut();
+  window.location.replace("index.html");
 });
 
 render();

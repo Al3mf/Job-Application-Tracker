@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard · Job Application Tracker</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">JT</span>
+      <h1>Job Application Tracker</h1>
+    </div>
+    <div class="topbar-actions">
+      <button id="new-app-btn" class="btn btn-primary">+ New Application</button>
+      <div class="user-menu">
+        <span id="user-avatar" class="avatar" aria-hidden="true"></span>
+        <span id="user-name" class="user-name"></span>
+        <button id="logout-btn" class="btn btn-ghost">Log out</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="board">
+    <section class="column" data-status="in-progress" style="--i: 0">
+      <div class="column-header">
+        <span class="dot dot-progress"></span>
+        <h2>In Progress</h2>
+        <span class="count">0</span>
+      </div>
+      <div class="card-list"></div>
+    </section>
+
+    <section class="column" data-status="in-review" style="--i: 1">
+      <div class="column-header">
+        <span class="dot dot-review"></span>
+        <h2>In Review</h2>
+        <span class="count">0</span>
+      </div>
+      <div class="card-list"></div>
+    </section>
+
+    <section class="column" data-status="interview" style="--i: 2">
+      <div class="column-header">
+        <span class="dot dot-interview"></span>
+        <h2>Interview</h2>
+        <span class="count">0</span>
+      </div>
+      <div class="card-list"></div>
+    </section>
+
+    <section class="column" data-status="closed" style="--i: 3">
+      <div class="column-header">
+        <span class="dot dot-closed"></span>
+        <h2>Closed</h2>
+        <span class="count">0</span>
+      </div>
+      <div class="card-list"></div>
+    </section>
+  </main>
+
+  <!-- New application modal -->
+  <dialog id="app-dialog">
+    <form id="app-form" method="dialog">
+      <h3>New Application</h3>
+
+      <label>Job position
+        <input name="position" required placeholder="e.g. Frontend Developer">
+      </label>
+      <label>Company
+        <input name="company" required placeholder="e.g. Acme Corp">
+      </label>
+      <label><span>Job link <span class="optional">(optional)</span></span>
+        <input name="link" type="url" placeholder="https://www.linkedin.com/jobs/view/...">
+      </label>
+      <div class="row">
+        <label>Job type
+          <select name="jobType" required>
+            <option value="" selected>-</option>
+            <option value="Full-time">Full-time</option>
+            <option value="Part-time">Part-time</option>
+            <option value="Internship">Internship</option>
+          </select>
+        </label>
+        <label>Job mode
+          <select name="jobMode" required>
+            <option value="" selected>-</option>
+            <option value="Hybrid">Hybrid</option>
+            <option value="Remote">Remote</option>
+            <option value="On-site">On-site</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label>Application date
+          <input name="date" type="date" required>
+        </label>
+        <label>Referral
+          <select name="referral" required>
+            <option value="" selected>-</option>
+            <option value="no">No</option>
+            <option value="yes">Yes</option>
+          </select>
+        </label>
+      </div>
+      <div class="row">
+        <label>Applied via
+          <span class="select-icon">
+            <span id="source-preview" class="source-icon"></span>
+            <select name="source" required>
+            <option value="" selected>-</option>
+            <option value="LinkedIn">LinkedIn</option>
+            <option value="Indeed">Indeed</option>
+            <option value="Handshake">Handshake</option>
+            <option value="Glassdoor">Glassdoor</option>
+            <option value="Company website">Company website</option>
+            <option value="Email">Email</option>
+            <option value="Career fair">Career fair</option>
+            <option value="Other">Other</option>
+            </select>
+          </span>
+        </label>
+        <label>Status
+          <select name="status" required>
+            <option value="" selected>-</option>
+            <option value="in-progress">In Progress</option>
+            <option value="in-review">In Review</option>
+            <option value="interview">Interview</option>
+            <optgroup label="Closed">
+              <option value="hired">Hired</option>
+              <option value="rejected">Rejected</option>
+            </optgroup>
+          </select>
+        </label>
+      </div>
+      <div class="actions">
+        <button type="button" id="cancel-btn" class="btn">Cancel</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- Application details modal -->
+  <dialog id="details-dialog">
+    <form id="details-form" method="dialog">
+      <h3 id="details-position"></h3>
+      <p id="details-company" class="details-company"></p>
+
+      <dl class="details-list">
+        <dt>Job type</dt><dd id="details-jobType"></dd>
+        <dt>Job mode</dt><dd id="details-jobMode"></dd>
+        <dt>Application date</dt><dd id="details-date"></dd>
+        <dt>Referral</dt><dd id="details-referral"></dd>
+        <dt>Applied via</dt><dd id="details-source"></dd>
+        <dt>Job link</dt><dd id="details-link"></dd>
+      </dl>
+
+      <label>Status
+        <select name="status" required>
+          <option value="in-progress">In Progress</option>
+          <option value="in-review">In Review</option>
+          <option value="interview">Interview</option>
+          <optgroup label="Closed">
+              <option value="hired">Hired</option>
+              <option value="rejected">Rejected</option>
+            </optgroup>
+        </select>
+      </label>
+
+      <div class="actions">
+        <button type="button" id="delete-btn" class="btn btn-danger">Delete</button>
+        <span class="spacer"></span>
+        <button type="button" id="details-close-btn" class="btn">Close</button>
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="auth.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

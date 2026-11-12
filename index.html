@@ -7,162 +7,92 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="assets/logo.png">
   <link rel="stylesheet" href="styles.css">
 </head>
-<body>
-  <header class="topbar">
+<body class="auth-page">
+  <!-- Left: welcome panel -->
+  <section class="auth-hero">
     <div class="brand">
-      <span class="logo">JT</span>
-      <h1>Job Application Tracker</h1>
+      <img class="brand-logo" src="assets/logo-white.png" alt="JAT logo" width="51" height="34">
+      <span class="brand-name">Job Application Tracker</span>
     </div>
-    <button id="new-app-btn" class="btn btn-primary">+ New Application</button>
-  </header>
 
-  <main class="board">
-    <section class="column" data-status="in-progress">
-      <div class="column-header">
-        <span class="dot dot-progress"></span>
-        <h2>In Progress</h2>
-        <span class="count">0</span>
-      </div>
-      <div class="card-list"></div>
-    </section>
+    <div class="hero-copy">
+      <h1>Every application,<br>one clear board.</h1>
+      <p>Keep track of where you applied, which stage each process is in and what to follow up on next.</p>
 
-    <section class="column" data-status="in-review">
-      <div class="column-header">
-        <span class="dot dot-review"></span>
-        <h2>In Review</h2>
-        <span class="count">0</span>
-      </div>
-      <div class="card-list"></div>
-    </section>
+      <ul class="hero-points">
+        <li><span class="point-mark"></span>Follow every application in four stages, until you get hired or rejected</li>
+        <li><span class="point-mark"></span>Save the job type, mode, platform, referral and job link</li>
+        <li><span class="point-mark"></span>See your whole job search at a glance</li>
+      </ul>
+    </div>
 
-    <section class="column" data-status="interview">
-      <div class="column-header">
-        <span class="dot dot-interview"></span>
-        <h2>Interview</h2>
-        <span class="count">0</span>
-      </div>
-      <div class="card-list"></div>
-    </section>
+    <!-- Small preview of the board -->
+    <!-- An application card moves from one stage to the next until it is closed as hired -->
+    <div class="hero-preview" aria-hidden="true">
+      <div class="preview-col" style="--c: var(--progress); --i: 0"><span class="preview-head">In Progress</span><span class="preview-card traveler"></span><span class="preview-card short"></span></div>
+      <div class="preview-col" style="--c: var(--review); --i: 1"><span class="preview-head">In Review</span><span class="preview-card traveler"></span><span class="preview-card"></span></div>
+      <div class="preview-col" style="--c: var(--interview); --i: 2"><span class="preview-head">Interview</span><span class="preview-card traveler"></span><span class="preview-card short"></span></div>
+      <div class="preview-col" style="--c: var(--closed); --i: 3"><span class="preview-head">Closed</span><span class="preview-card traveler hired-card"><span class="check">✓ Hired</span></span><span class="preview-card short rejected-ghost"></span></div>
+    </div>
+  </section>
 
-    <section class="column" data-status="closed">
-      <div class="column-header">
-        <span class="dot dot-closed"></span>
-        <h2>Closed</h2>
-        <span class="count">0</span>
+  <!-- Right: log in / sign up -->
+  <main class="auth-main">
+    <div class="auth-card">
+      <img class="auth-logo" src="assets/logo.png" alt="Job Application Tracker" width="150" height="100">
+      <div class="auth-tabs" role="tablist">
+        <button type="button" class="auth-tab active" data-tab="login" role="tab" aria-selected="true">Log in</button>
+        <button type="button" class="auth-tab" data-tab="signup" role="tab" aria-selected="false">Sign up</button>
       </div>
-      <div class="card-list"></div>
-    </section>
+
+      <form id="login-form" class="auth-form" novalidate>
+        <h2>Welcome back</h2>
+        <p class="auth-subtitle">Log in to see your applications.</p>
+
+        <label>Email
+          <input name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+        </label>
+        <label>Password
+          <input name="password" type="password" autocomplete="current-password" required placeholder="Your password">
+        </label>
+
+        <p class="form-error" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Log in</button>
+        <p class="auth-switch">Don't have an account? <button type="button" class="link-btn" data-go="signup">Sign up</button></p>
+      </form>
+
+      <form id="signup-form" class="auth-form" hidden novalidate>
+        <h2>Create your account</h2>
+        <p class="auth-subtitle">Start tracking your job search in minutes.</p>
+
+        <label>Full name
+          <input name="name" autocomplete="name" required placeholder="e.g. Alex Smith">
+        </label>
+        <label>Email
+          <input name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+        </label>
+        <div class="row">
+          <label>Password
+            <input name="password" type="password" autocomplete="new-password" required minlength="6" placeholder="At least 6 characters">
+          </label>
+          <label>Confirm password
+            <input name="confirm" type="password" autocomplete="new-password" required placeholder="Repeat password">
+          </label>
+        </div>
+
+        <p class="form-error" role="alert"></p>
+        <button type="submit" class="btn btn-primary btn-block">Create account</button>
+        <p class="auth-switch">Already have an account? <button type="button" class="link-btn" data-go="login">Log in</button></p>
+      </form>
+
+      <p class="auth-note">Prototype: accounts are saved only in this browser.</p>
+    </div>
   </main>
 
-  <!-- New application modal -->
-  <dialog id="app-dialog">
-    <form id="app-form" method="dialog">
-      <h3>New Application</h3>
-
-      <label>Job position
-        <input name="position" required placeholder="e.g. Frontend Developer">
-      </label>
-      <label>Company
-        <input name="company" required placeholder="e.g. Acme Corp">
-      </label>
-      <div class="row">
-        <label>Job type
-          <select name="jobType" required>
-            <option value="" selected>-</option>
-            <option value="Full-time">Full-time</option>
-            <option value="Part-time">Part-time</option>
-            <option value="Internship">Internship</option>
-          </select>
-        </label>
-        <label>Job mode
-          <select name="jobMode" required>
-            <option value="" selected>-</option>
-            <option value="Hybrid">Hybrid</option>
-            <option value="Remote">Remote</option>
-            <option value="On-site">On-site</option>
-          </select>
-        </label>
-      </div>
-      <div class="row">
-        <label>Application date
-          <input name="date" type="date" required>
-        </label>
-        <label>Referral
-          <select name="referral" required>
-            <option value="" selected>-</option>
-            <option value="no">No</option>
-            <option value="yes">Yes</option>
-          </select>
-        </label>
-      </div>
-      <div class="row">
-        <label>Applied via
-          <span class="select-icon">
-            <span id="source-preview" class="source-icon"></span>
-            <select name="source" required>
-            <option value="" selected>-</option>
-            <option value="LinkedIn">LinkedIn</option>
-            <option value="Indeed">Indeed</option>
-            <option value="Handshake">Handshake</option>
-            <option value="Glassdoor">Glassdoor</option>
-            <option value="Company website">Company website</option>
-            <option value="Email">Email</option>
-            <option value="Career fair">Career fair</option>
-            <option value="Other">Other</option>
-            </select>
-          </span>
-        </label>
-        <label>Status
-          <select name="status" required>
-            <option value="" selected>-</option>
-            <option value="in-progress">In Progress</option>
-            <option value="in-review">In Review</option>
-            <option value="interview">Interview</option>
-            <option value="closed">Closed</option>
-          </select>
-        </label>
-      </div>
-      <div class="actions">
-        <button type="button" id="cancel-btn" class="btn">Cancel</button>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </div>
-    </form>
-  </dialog>
-
-  <!-- Application details modal -->
-  <dialog id="details-dialog">
-    <form id="details-form" method="dialog">
-      <h3 id="details-position"></h3>
-      <p id="details-company" class="details-company"></p>
-
-      <dl class="details-list">
-        <dt>Job type</dt><dd id="details-jobType"></dd>
-        <dt>Job mode</dt><dd id="details-jobMode"></dd>
-        <dt>Application date</dt><dd id="details-date"></dd>
-        <dt>Referral</dt><dd id="details-referral"></dd>
-        <dt>Applied via</dt><dd id="details-source"></dd>
-      </dl>
-
-      <label>Status
-        <select name="status" required>
-          <option value="in-progress">In Progress</option>
-          <option value="in-review">In Review</option>
-          <option value="interview">Interview</option>
-          <option value="closed">Closed</option>
-        </select>
-      </label>
-
-      <div class="actions">
-        <button type="button" id="delete-btn" class="btn btn-danger">Delete</button>
-        <span class="spacer"></span>
-        <button type="button" id="details-close-btn" class="btn">Close</button>
-        <button type="submit" class="btn btn-primary">Save</button>
-      </div>
-    </form>
-  </dialog>
-
-  <script src="app.js"></script>
+  <script src="auth.js"></script>
+  <script src="login.js"></script>
 </body>
 </html>

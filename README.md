@@ -1,3 +1,5 @@
+<p align="center"><img src="assets/logo.png" alt="JAT logo" width="160"></p>
+
 # Job Application Tracker
 
 A web dashboard to organize and follow up on job applications, from the moment you apply until the process is closed.
@@ -122,6 +124,7 @@ Job-Application-Tracker/
 ├── app.js          # Dashboard logic: rendering, forms, details menu, icons, per-user data
 ├── auth.js         # Accounts and session (shared by both pages)
 ├── styles.css      # Styles for every page
+├── assets/         # Logo (navy for light backgrounds, white for dark ones)
 ├── docs/           # Screenshots used in this README
 └── README.md
 ```

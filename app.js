@@ -9,11 +9,15 @@ if (!currentUser) window.location.replace("index.html");
 const LEGACY_KEY = "job-tracker-apps-v3"; // data saved before accounts existed
 const STORAGE_KEY = `job-tracker-apps:${currentUser?.email}`;
 
+// The Closed column holds both final outcomes.
+const COLUMN_STATUSES = { closed: ["hired", "rejected"] };
+
 const STATUS_LABELS = {
   "in-progress": "In Progress",
   "in-review": "In Review",
   "interview": "Interview",
   "hired": "Hired",
+  "rejected": "Rejected",
 };
 
 // Icons for "Applied via". Job sites use a letter badge in the site's color;
@@ -46,7 +50,7 @@ function sourceIcon(source) {
 
 let apps = load();
 
-// "Closed" was renamed to "Hired".
+// Old "closed" applications become "hired" (the Closed column now holds Hired and Rejected).
 function migrate(list) {
   list.forEach((a) => { if (a.status === "closed") a.status = "hired"; });
   return list;
@@ -89,7 +93,7 @@ function render() {
   document.querySelectorAll(".column").forEach((column) => {
     const status = column.dataset.status;
     const list = column.querySelector(".card-list");
-    const items = apps.filter((a) => a.status === status);
+    const items = apps.filter((a) => (COLUMN_STATUSES[status] || [status]).includes(a.status));
 
     column.querySelector(".count").textContent = items.length;
     list.innerHTML = "";
@@ -119,6 +123,14 @@ function createCard(app) {
   company.className = "company";
   company.textContent = app.company;
   card.append(title, company);
+
+  // Final outcome badge (only in the Closed column)
+  if (app.status === "hired" || app.status === "rejected") {
+    const outcome = document.createElement("span");
+    outcome.className = `outcome outcome-${app.status}`;
+    outcome.textContent = app.status === "hired" ? "✓ Hired" : "✕ Rejected";
+    card.prepend(outcome);
+  }
 
   const tags = document.createElement("div");
   tags.className = "tags";

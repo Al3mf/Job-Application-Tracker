@@ -13,7 +13,9 @@
   --progress: #d97706;
   --review: #7c3aed;
   --interview: #0e7490;
+  --closed: #475569;
   --hired: #15803d;
+  --rejected: #c62828;
   --danger: #c62828;
   --radius: 6px;
   --radius-sm: 4px;
@@ -130,7 +132,7 @@ h1, h2, h3 { letter-spacing: -0.01em; }
 .column[data-status="in-progress"] { --stage: var(--progress); }
 .column[data-status="in-review"]   { --stage: var(--review); }
 .column[data-status="interview"]   { --stage: var(--interview); }
-.column[data-status="hired"]       { --stage: var(--hired); }
+.column[data-status="closed"]      { --stage: var(--closed); }
 .card.enter { animation: card-in 0.35s ease-out both; animation-delay: calc(var(--i, 0) * 0.15s + 0.3s); }
 .card.just-moved { animation: card-moved 0.9s ease-out; }
 
@@ -158,7 +160,7 @@ h1, h2, h3 { letter-spacing: -0.01em; }
 .dot-progress  { background: var(--progress); }
 .dot-review    { background: var(--review); }
 .dot-interview { background: var(--interview); }
-.dot-hired     { background: var(--hired); }
+.dot-closed    { background: var(--closed); }
 
 .card-list { display: flex; flex-direction: column; gap: 12px; flex: 1; }
 .empty { color: var(--subtle); font-size: 0.85rem; text-align: center; padding: 20px 0; margin: 0; }
@@ -180,6 +182,18 @@ h1, h2, h3 { letter-spacing: -0.01em; }
 .card.status-in-review   { --accent: var(--review); }
 .card.status-interview   { --accent: var(--interview); }
 .card.status-hired       { --accent: var(--hired); }
+.card.status-rejected    { --accent: var(--rejected); }
+
+/* Outcome badge for closed applications */
+.outcome {
+  align-self: flex-start;
+  display: inline-flex; align-items: center;
+  height: 22px; padding: 0 8px; margin-bottom: 8px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem; font-weight: 600; letter-spacing: 0.04em; text-transform: uppercase;
+}
+.outcome-hired    { background: #e8f5ec; color: var(--hired); }
+.outcome-rejected { background: #fdecec; color: var(--rejected); }
 .card:hover { box-shadow: var(--shadow-md); transform: translateY(-1px); }
 .card:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 
@@ -354,9 +368,10 @@ form .actions .spacer { flex: 1; }
   animation: travel 8s infinite;
   animation-delay: calc(var(--i) * 1.6s);
 }
-.preview-card.hired-card { animation-name: travel-last; }
+.preview-card.hired-card { animation-name: travel-last; border-left-color: var(--hired); }
+.preview-card.rejected-ghost { border-left: 3px solid rgb(198 40 40 / 0.7); }
 .check {
-  color: var(--hired); font-weight: 700; font-size: 0.9rem;
+  color: var(--hired); font-weight: 700; font-size: 0.7rem; letter-spacing: 0.04em; text-transform: uppercase;
   opacity: 0; animation: check-pop 8s infinite; animation-delay: 4.8s;
 }
 
